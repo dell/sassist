@@ -3,12 +3,11 @@ Description=Enable Dell SupportAssist
 Documentation=http://www.dell.com/en-us/work/learn/supportassist
 
 ConditionFileIsExecutable=/usr/sbin/ipmi-raw
-ConditionFileIsExecutable=/usr/sbin/sosreport
 ConditionPathExistsGlob=/dev/ipmi*
 
 [Service]
 Type=oneshot
-ExecStart=/usr/libexec/sassist.sh enable
+ExecStart=/usr/bin/sassist.sh enable
 
 [Install]
 WantedBy=multi-user.target
