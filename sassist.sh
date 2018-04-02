@@ -4,7 +4,7 @@
 #
 # Export sosreport to Dell PowerEdge Server iDRAC for out-of-band access.
 #
-# v0.7.0
+# v0.8.0
 #
 # Usage:
 #	Invoked by sassist.service when SupportAssist USB block device

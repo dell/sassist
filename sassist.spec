@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.7.1
+Version:	0.8.0
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
@@ -62,6 +62,9 @@ rm -rf -- "%{buildroot}"
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Mon Apr 02 2018 Charles Rose <charles_rose@dell.com> - 0.8.0
+- add support for supportconfig
+
 * Mon Apr 02 2018 Charles Rose <charles_rose@dell.com> - 0.7.1
 - support multi-distro
 
