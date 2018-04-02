@@ -37,6 +37,7 @@ SOS_PLUGINS="block,boot,devices,devicemapper,dmraid,filesys,firewalld,\
 general,grub2,hardware,kernel,kvm,last,logs,lsbrelease,lvm2,md,\
 megacli,memory,multipath,networking,pci,process,rpm,services,\
 scsi,systemd,sysvipc,teamd,usb,udev,x11,xfs"
+SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
 SOS_OPTIONS="services.servicestatus=on"
 sos_cleaner="/usr/bin/soscleaner"
 #--------------------------------------------------------------
@@ -57,76 +58,64 @@ end_partial="ipmi 2 1 3"
 do_close="ipmi 2 2 0"
 do_fail="ipmi 2 3 0"
 
+SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
+OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
+# Partial Report - TODO
+OUTFILE_P="${TMP_DIR}/OSC-PR-Report-${SVCTAG}.zip"
+TMP_DIR=$(mktemp -d)
+
 can_do_sassist()
 {
-	if [ -x "$sos_cleaner" ]; then
-		FILTER="yes"
-		$can_filter
-	else
-		FILTER="no"
-		$cannot_filter
-	fi
+	#TODO: until tools like soscleaner become in-distro
+	$cannot_filter
 	return $?
 }
 
-# prepare <input_file> <output_file>
-prepare()
+# Run sosreport and zip results
+do_sosreport()
 {
-	DIR=$(dirname ${1})
-	SRC=$(basename ${2} .zip)
-	TEMP="${DIR}/${SRC}"
+	/usr/sbin/sosreport --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS}\
+		--tmp-dir ${TMP_DIR} --build --quiet \
+		--name ${SVCTAG}
+	# Windows does not like some filenames
+	find ${TMP_DIR} -name "modinfo_*" -execdir mv '{}' modinfo \;
+	find ${TMP_DIR} -name "find_*" -execdir rm -r '{}' \;
+	find ${TMP_DIR} -name "*:*" -execdir rm -rf '{}' \;
 
-	mkdir ${TEMP}
-	tar --strip-components=1 -xf ${1} -C ${TEMP}
-
-	# Windows does not like long filenames
-	find ${TEMP} -name "modinfo_*" -execdir mv '{}' modinfo \;
-	find ${TEMP} -name "find_*" -execdir rm -r '{}' \;
-	find ${TEMP} -name "*:*" -execdir rm -rf '{}' \;
-
-	$(cd ${TEMP}; zip -y -q -r ${2} . )
-
-	sha256sum ${2}| cut -d' ' -f1| sed 's/.\{2\}/& /g'
+	$(cd ${TMP_DIR}/sosreport-*; zip -y -q -r ${OUTFILE_F} . )
 }
 
-do_sosreport()
+# Run supportconfig and zip results
+do_supportconfig()
+{
+	/sbin/supportconfig -Q -d -k -t ${TMP_DIR} \
+		-i ${SCONFIG_PLUGINS} -B ${SVCTAG}
+	$(cd ${TMP_DIR}/nts_${SVCTAG}; zip -q -r ${OUTFILE_F} . )
+}
+
+do_report()
 {
 	if $(findmnt | grep -q "$MEDIA_DIR") && ! $supported; then
 		$do_fail
 	fi
 
-	SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
-	OUTFILE_F="OSC-FR-Report-${SVCTAG}.zip"
-	OUTFILE_P="OSC-PR-Report-${SVCTAG}.zip"
-
-	TMP_DIR=$(mktemp -d)
-	/usr/sbin/sosreport --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS} \
-		--tmp-dir ${TMP_DIR} --quiet --name OSC-FR-Report-${SVCTAG}
-
-	if [ $? -ne 0 ]; then
-		$do_fail
-		return 1
+	if [ -x /usr/sbin/sosreport ]; then
+		do_sosreport >/dev/null 2>&1
+	elif [ -x /sbin/supportconfig ]; then
+		do_supportconfig >/dev/null 2>&1
+	else
+		do_stop
 	fi
 
-	SHA_F=$(prepare ${TMP_DIR}/sosreport*xz ${TMP_DIR}/${OUTFILE_F} \
-		2> /dev/null)
+	SHA_F=$(sha256sum ${OUTFILE_F}| cut -d' ' -f1| sed 's/.\{2\}/& /g')
 
-	if [ $FILTER = "yes" ]; then
-		$sos_cleaner -q ${TMP_DIR}/sosreport*xz -r ${TMP_DIR} && \
-		SHA_P=$(prepare ${TMP_DIR}/soscleaner*gz \
-			${TMP_DIR}/${OUTFILE_P} 2> /dev/null)
-	fi
-
-	cp -f ${TMP_DIR}/OSC-*zip ${MEDIA_DIR}/
+	cp -f ${TMP_DIR}/OSC-*zip ${MEDIA_DIR}/ >/dev/null 2>&1
 	umount -r ${MEDIA_DIR}
+	rm -rf ${TMP_DIR}
 
 	# Close connection with checksum
 	$end_full "${SHA_F}"
-	[ $FILTER = "yes" ] && $end_partial "${SHA_P}"
-
 	$do_close
-
-	rm -rf ${TMP_DIR}
 }
 
 do_stop()
@@ -143,7 +132,7 @@ case $1 in
 	;;
 	start)
 		can_do_sassist && \
-		do_sosreport
+		do_report
 		exit $?
 	;;
 	stop)
