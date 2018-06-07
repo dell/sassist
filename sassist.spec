@@ -18,6 +18,7 @@ Requires(postun): systemd-units
 %endif
 Requires: freeipmi
 Requires: systemd
+Requires: zip
 
 BuildArch: noarch
 %{?systemd_requires}
