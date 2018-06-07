@@ -59,10 +59,10 @@ do_close="ipmi 2 2 0"
 do_fail="ipmi 2 3 0"
 
 SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
+TMP_DIR=$(mktemp -d)
 OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
 # Partial Report - TODO
 OUTFILE_P="${TMP_DIR}/OSC-PR-Report-${SVCTAG}.zip"
-TMP_DIR=$(mktemp -d)
 
 can_do_sassist()
 {
