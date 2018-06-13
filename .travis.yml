@@ -1,0 +1,24 @@
+language: c
+sudo: required
+dist: trusty
+
+services:
+  - docker
+
+env:
+  - OS=centos7
+
+install:
+  - ./pkg/build-dockerfile.sh $OS
+
+script:
+  - docker run -e CI=true -t -v `pwd`/dist:/build/dist sassist-$OS
+
+deploy:
+  provider: releases
+  file_glob: true
+  file: dist/*
+  skip_cleanup:  true
+  on:
+    tags: true
+    repo: dell/sassist

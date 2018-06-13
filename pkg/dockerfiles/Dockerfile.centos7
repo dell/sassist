@@ -1,0 +1,17 @@
+FROM centos:7
+
+VOLUME /output
+
+ENV OUTPUT_DIR /build/dist
+ENV BUILD_DIR /build
+
+RUN yum install -y \
+   rpm-build \
+   make \
+   bash \
+  && yum clean all
+
+WORKDIR $BUILD_DIR
+COPY . .
+
+CMD ["./pkg/dockerfiles/centos7-entrypoint.sh"]
