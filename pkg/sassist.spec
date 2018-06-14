@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.8.0
+Version:	0.8.1
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
@@ -63,6 +63,9 @@ rm -rf -- "%{buildroot}"
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Thu Jun 14 2018 Charles Rose <charles_rose@dell.com> - 0.8.1
+- add dependency on zip. fix temp dir creation bug
+
 * Mon Apr 02 2018 Charles Rose <charles_rose@dell.com> - 0.8.0
 - add support for supportconfig
 
