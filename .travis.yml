@@ -1,24 +1,20 @@
 language: c
 sudo: required
 dist: trusty
-
 services:
-  - docker
-
+- docker
 env:
-  - OS=centos7
-
+- OS=centos7
 install:
-  - ./pkg/build-dockerfile.sh $OS
-
+- ./pkg/build-dockerfile.sh $OS
 script:
-  - docker run -e CI=true -t -v `pwd`/dist:/build/dist sassist-$OS
-
+- docker run -e CI=true -t -v `pwd`/dist:/build/dist sassist-$OS
 deploy:
   provider: releases
+  api_key:
+    secure: Gl4jy5hG2VM5adl6XJiaXUXjbYyUKzS1av9ok6V5j8qEwr36ZIyEwHltkqQ8y1kGhctoRAyALJZTc+DiJb9yKfovhnMm84fpNtg4y4ZGzuqr3zttOePrdjVeXs3vw7HOGkOg9E6M4kwUMlidGBg6gdBpQZiCm+s3voT2lQ5LXgPbJoFJUXgpqovQ8o+PzL2bc+0vwQBlGq7BYTWWnl0NonESJwCqF9jziUupnsInni+6stGfKE0AH9MkBx90UgRQCbbVtMufGo4Kao1Bxt5hJp/Cn9QscWb35oUMqOhblyYFOpb62f15cviZky9pFo53/bM/ybqbG44jujEZGRva46dAC9GW3uNpXwsm2acXHBHVTjvLuWy8GwJc2lmcdlKNeXacEwbc0znGKj3PawWNiWWEWMon3HAqhxTi1POk4BaZqBA9+wrMxnQyYPi4V0TxU0Vs3679erbkWhppOKWAcm/cyDeGvps9LsuwW0PRTShB+PVOB+N0cYUEmyhTmGx6/DAtGAT+TOeUIl24Ql/kzBQ/GLPaa2yH6sCCwW419y7pbO7K6sJV+EUvJ+Ad7hoIkzhdwRxqw/MFvMVrkSSfb2EPHVJ1Bj8M8IZALeD1YXH1bn254EwAX4ZySAYAs/kb0vHlXR8LD7/YM7LKqoFgLJ5BZj890pckYQbtTz7G9Q8=
   file_glob: true
   file: dist/*
   skip_cleanup:  true
   on:
-    tags: true
     repo: dell/sassist
