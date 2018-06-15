@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.8.1
+Version:	0.8.2
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
@@ -54,6 +54,9 @@ install -p -m644 src/systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Thu Jun 14 2018 Charles Rose <charles_rose@dell.com> - 0.8.2
+- guess paths for log collectors. fix error handling.
+
 * Thu Jun 14 2018 Charles Rose <charles_rose@dell.com> - 0.8.1
 - add dependency on zip. fix temp dir creation bug
 
