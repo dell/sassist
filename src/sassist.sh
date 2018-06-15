@@ -74,7 +74,7 @@ can_do_sassist()
 # Run sosreport and zip results
 do_sosreport()
 {
-	/usr/sbin/sosreport --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS}\
+	$SOSREPORT --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS}\
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG}
 	# Windows does not like some filenames
@@ -88,7 +88,7 @@ do_sosreport()
 # Run supportconfig and zip results
 do_supportconfig()
 {
-	/sbin/supportconfig -Q -d -k -t ${TMP_DIR} \
+	$SUPPORTCONFIG -Q -d -k -t ${TMP_DIR} \
 		-i ${SCONFIG_PLUGINS} -B ${SVCTAG}
 	$(cd ${TMP_DIR}/nts_${SVCTAG}; zip -q -r ${OUTFILE_F} . )
 }
@@ -99,9 +99,9 @@ do_report()
 		$do_fail
 	fi
 
-	if [ -x /usr/sbin/sosreport ]; then
+	if [ -x "$SOSREPORT" ]; then
 		do_sosreport >/dev/null 2>&1
-	elif [ -x /sbin/supportconfig ]; then
+	elif [ -x "$SUPPORTCONFIG" ]; then
 		do_supportconfig >/dev/null 2>&1
 	else
 		do_stop
@@ -125,6 +125,9 @@ do_stop()
 }
 
 # Main
+SOSREPORT=$(which sosreport)
+SUPPORTCONFIG=$(which supportconfig)
+
 case $1 in
 	enable)
 		can_do_sassist
