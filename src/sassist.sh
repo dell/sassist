@@ -45,7 +45,12 @@ ipmi()
 {
 	OUT=$(/usr/sbin/ipmi-raw 0 30 a8 $@)
 	if [ $? -eq 0 ]; then
-		return $(printf "$OUT"| cut -c14)
+		RET=$(printf "$OUT"| awk '{print $4}')
+		if [ "$RET" -eq 0 ]; then
+			return 0
+		else
+			return 1
+		fi
 	fi
 	return 1
 }
@@ -76,27 +81,31 @@ do_sosreport()
 {
 	$SOSREPORT --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS}\
 		--tmp-dir ${TMP_DIR} --build --quiet \
-		--name ${SVCTAG}
+		--name ${SVCTAG} || return 1
 	# Windows does not like some filenames
 	find ${TMP_DIR} -name "modinfo_*" -execdir mv '{}' modinfo \;
 	find ${TMP_DIR} -name "find_*" -execdir rm -r '{}' \;
 	find ${TMP_DIR} -name "*:*" -execdir rm -rf '{}' \;
 
-	$(cd ${TMP_DIR}/sosreport-*; zip -y -q -r ${OUTFILE_F} . )
+	$(cd ${TMP_DIR}/sosreport-* && zip -y -q -r ${OUTFILE_F} . )
+	return $?
 }
 
 # Run supportconfig and zip results
 do_supportconfig()
 {
 	$SUPPORTCONFIG -Q -d -k -t ${TMP_DIR} \
-		-i ${SCONFIG_PLUGINS} -B ${SVCTAG}
-	$(cd ${TMP_DIR}/nts_${SVCTAG}; zip -q -r ${OUTFILE_F} . )
+		-i ${SCONFIG_PLUGINS} -B ${SVCTAG} || return 1
+
+	$(cd ${TMP_DIR}/nts_${SVCTAG} && zip -q -r ${OUTFILE_F} . )
+	return $?
 }
 
 do_report()
 {
 	if $(findmnt | grep -q "$MEDIA_DIR") && ! $supported; then
-		$do_fail
+		RETVAL=3
+		do_stop
 	fi
 
 	if [ -x "$SOSREPORT" ]; then
@@ -104,6 +113,12 @@ do_report()
 	elif [ -x "$SUPPORTCONFIG" ]; then
 		do_supportconfig >/dev/null 2>&1
 	else
+		RETVAL=5
+		do_stop
+	fi
+
+	if [ $? -ne 0 ]; then
+		RETVAL=6
 		do_stop
 	fi
 
@@ -111,6 +126,10 @@ do_report()
 
 	cp -f ${TMP_DIR}/OSC-*zip ${MEDIA_DIR}/ >/dev/null 2>&1
 	umount -r ${MEDIA_DIR}
+	if [ $? -ne 0 ]; then
+		RETVAL=1
+		do_stop
+	fi
 	rm -rf ${TMP_DIR}
 
 	# Close connection with checksum
@@ -122,6 +141,7 @@ do_stop()
 {
 	$do_close
 	$do_fail
+	exit $RETVAL
 }
 
 # Main
@@ -139,6 +159,7 @@ case $1 in
 		exit $?
 	;;
 	stop)
+		RETVAL=0
 		do_stop
 	;;
 	*)
