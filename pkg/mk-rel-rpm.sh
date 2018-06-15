@@ -5,12 +5,11 @@ set -x
 
 cur_dir=$(cd $(dirname $0); pwd)
 
-VERSION=$(cat VERSION)
-cp COPYING src
-mv src sassist-$VERSION
-tar zcf sassist-$VERSION.tar.gz ./sassist-$VERSION
-
 cd $cur_dir/../
+
+VERSION=$(cat VERSION)
+cp -a ../build ../sassist-$VERSION
+tar zcf sassist-$VERSION.tar.gz ../sassist-$VERSION
 
 umask 002
 

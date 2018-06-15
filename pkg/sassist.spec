@@ -3,21 +3,18 @@ Version:	0.8.1
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
-Group:		System Environment/Daemons
 License:	MIT
 URL:		http://www.dell.com/en-us/work/learn/supportassist
-Source0:	sassist-%{version}.tar.gz
+Source0:	https://github.com/dell/sassist/archive/%{version}/%{name}-%{version}.tar.gz
+
+BuildRequires:	systemd
 
 %if 0%{?suse_version}
 Requires: supportutils
 %else
 Requires: sos
-Requires: systemd-units
-Requires(post): systemd-units
-Requires(postun): systemd-units
 %endif
 Requires: freeipmi
-Requires: systemd
 Requires: zip
 
 BuildArch: noarch
@@ -27,27 +24,21 @@ BuildArch: noarch
 Dell SupportAssist log collector for Linux.
 
 %prep
-%setup -q -n sassist-%{version}
+%setup -q -n %{name}-%{version}
 
 %build
 
 %install
-rm -rf -- "%{buildroot}"
-
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_unitdir}
 
-install -p -m555 sassist.sh %{buildroot}%{_bindir}
-install -p -m644 systemd/sassist.service %{buildroot}%{_unitdir}
-install -p -m644 systemd/sassist-collect.service %{buildroot}%{_unitdir}
-install -p -m644 systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
-
-%clean
-rm -rf -- "%{buildroot}"
+install -p -m555 src/sassist.sh %{buildroot}%{_bindir}
+install -p -m644 src/systemd/sassist.service %{buildroot}%{_unitdir}
+install -p -m644 src/systemd/sassist-collect.service %{buildroot}%{_unitdir}
+install -p -m644 src/systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
 
 %files
-%defattr(-,root,root,-)
-%doc COPYING
+%license COPYING
 %{_bindir}/sassist.sh
 %{_unitdir}/sassist.service
 %{_unitdir}/sassist-collect.service
