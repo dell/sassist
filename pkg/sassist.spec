@@ -32,7 +32,7 @@ Dell SupportAssist log collector for Linux.
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_unitdir}
 
-install -p -m555 src/sassist.sh %{buildroot}%{_bindir}
+install -p -m755 src/sassist.sh %{buildroot}%{_bindir}
 install -p -m644 src/systemd/sassist.service %{buildroot}%{_unitdir}
 install -p -m644 src/systemd/sassist-collect.service %{buildroot}%{_unitdir}
 install -p -m644 src/systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
@@ -54,6 +54,9 @@ install -p -m644 src/systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Mon Jun 18 2018 Charles Rose <charles_rose@dell.com> - 0.8.2-1
+- incorporate spec file suggestions from Robert-André Mauchin
+
 * Thu Jun 14 2018 Charles Rose <charles_rose@dell.com> - 0.8.2
 - guess paths for log collectors. fix error handling.
 
