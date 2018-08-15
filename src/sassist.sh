@@ -88,6 +88,7 @@ do_sosreport()
 	find ${TMP_DIR} -name "modinfo_*" -execdir mv '{}' modinfo \;
 	find ${TMP_DIR} -name "find_*" -execdir rm -r '{}' \;
 	find ${TMP_DIR} -name "*:*" -execdir rm -rf '{}' \;
+	find ${TMP_DIR} -type s -execdir rm -f '{}' \;
 
 	$(cd ${TMP_DIR}/sosreport-* && zip -y -q -r ${OUTFILE_F} . )
 	return $?
