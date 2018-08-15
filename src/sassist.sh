@@ -39,7 +39,9 @@ megacli,memory,multipath,networking,pci,process,rpm,services,\
 scsi,systemd,sysvipc,teamd,usb,udev,x11,xfs"
 SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
 SOS_OPTIONS="services.servicestatus=on"
-sos_cleaner="/usr/bin/soscleaner"
+SOSREPORT="/usr/sbin/sosreport"
+SUPPORTCONFIG="/sbin/supportconfig"
+
 #--------------------------------------------------------------
 ipmi()
 {
@@ -145,9 +147,6 @@ do_stop()
 }
 
 # Main
-SOSREPORT=$(which sosreport)
-SUPPORTCONFIG=$(which supportconfig)
-
 case $1 in
 	enable)
 		can_do_sassist
