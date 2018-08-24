@@ -33,12 +33,7 @@
 
 
 # User configurable options
-SOS_PLUGINS="block,boot,devices,devicemapper,dmraid,filesys,firewalld,\
-general,grub2,hardware,kernel,kvm,last,logs,lsbrelease,lvm2,md,\
-megacli,memory,multipath,networking,pci,process,rpm,services,\
-scsi,systemd,sysvipc,teamd,usb,udev,x11,xfs"
 SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
-SOS_OPTIONS="services.servicestatus=on"
 SOSREPORT="/usr/sbin/sosreport"
 SUPPORTCONFIG="/sbin/supportconfig"
 
@@ -81,7 +76,7 @@ can_do_sassist()
 # Run sosreport and zip results
 do_sosreport()
 {
-	$SOSREPORT --batch -o ${SOS_PLUGINS} -k ${SOS_OPTIONS}\
+	$SOSREPORT --batch -a\
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG} || return 1
 	# Windows does not like some filenames
