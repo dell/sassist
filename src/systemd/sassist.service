@@ -11,4 +11,4 @@ ExecStart=/usr/bin/sassist.sh enable
 
 [Install]
 WantedBy=multi-user.target
-Also=media-iDRAC_NATOSC.mount
+Also=run-media-iDRAC_NATOSC.mount

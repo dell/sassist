@@ -14,10 +14,10 @@ This package contains the following files:
  - systemd/sassist.service
 	run at system start-up to enable SupportAssist functionality
 	in Dell iDRAC.
- - systemd/media-NATOSC.mount
+ - systemd/run-media-NATOSC.mount
 	mount NATOSC automatically and call sassist.service.
  - systemd/sassist-collect.service
-	invoked by media-NATOSC to do the log collection.
+	invoked by run-media-NATOSC to do the log collection.
  - sassist.spec
 	RPM spec file.
 

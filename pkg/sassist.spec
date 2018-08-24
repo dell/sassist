@@ -35,14 +35,14 @@ mkdir -p %{buildroot}%{_unitdir}
 install -p -m755 src/sassist.sh %{buildroot}%{_bindir}
 install -p -m644 src/systemd/sassist.service %{buildroot}%{_unitdir}
 install -p -m644 src/systemd/sassist-collect.service %{buildroot}%{_unitdir}
-install -p -m644 src/systemd/media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
+install -p -m644 src/systemd/run-media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir}
 
 %files
 %license COPYING
 %{_bindir}/sassist.sh
 %{_unitdir}/sassist.service
 %{_unitdir}/sassist-collect.service
-%{_unitdir}/media-iDRAC_NATOSC.mount
+%{_unitdir}/run-media-iDRAC_NATOSC.mount
 
 %post
 %systemd_post sassist.service
