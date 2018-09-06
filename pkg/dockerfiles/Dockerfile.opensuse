@@ -1,15 +1,15 @@
-FROM centos:7
+FROM opensuse
 
 VOLUME /output
 
 ENV OUTPUT_DIR /build/dist
 ENV BUILD_DIR /build
 
-RUN yum install -y \
+RUN zypper in -y \
    rpm-build \
    make \
    bash \
-  && yum clean all
+  && zypper clean -a
 
 WORKDIR $BUILD_DIR
 COPY . .

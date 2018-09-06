@@ -5,6 +5,7 @@ services:
 - docker
 env:
 - OS=centos7
+- OS=opensuse
 install:
 - ./pkg/build-dockerfile.sh $OS
 script:
