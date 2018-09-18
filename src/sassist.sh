@@ -42,14 +42,9 @@ SUPPORTCONFIG="/sbin/supportconfig"
 #--------------------------------------------------------------
 ipmi()
 {
-	OUT=$(/usr/sbin/ipmi-raw 0 30 a8 $@)
-	if [ $? -eq 0 ]; then
-		RET=$(printf "$OUT"| awk '{print $4}')
-		if [ "$RET" -eq 0 ]; then
-			return 0
-		else
-			return 1
-		fi
+	RET=$(/usr/sbin/ipmi-raw 0 30 a8 $@ | awk '{print $4}')
+	if [ $? -eq 0 -a "$RET" -ne 1 ]; then
+		return 0
 	fi
 	return 1
 }
@@ -62,17 +57,9 @@ end_partial="ipmi 2 1 3"
 do_close="ipmi 2 2 0"
 do_fail="ipmi 2 3 0"
 
-SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
-TMP_DIR=$(mktemp -d)
-OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
-# Partial Report - TODO
-OUTFILE_P="${TMP_DIR}/OSC-PR-Report-${SVCTAG}.zip"
-
 can_do_sassist()
 {
-	#TODO: until tools like soscleaner become in-distro
 	$cannot_filter
-	return $?
 }
 
 # Run sosreport and zip results
@@ -81,14 +68,13 @@ do_sosreport()
 	$SOSREPORT --batch -o ${SOS_PLUGINS} -p ${SOS_PROFILES}\
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG} || return 1
-	# Windows does not like some filenames
+	# Windows does not like some filenames in zip files
 	find ${TMP_DIR} -name "modinfo_*" -execdir mv '{}' modinfo \;
 	find ${TMP_DIR} -name "find_*" -execdir rm -r '{}' \;
 	find ${TMP_DIR} -name "*:*" -execdir rm -rf '{}' \;
 	find ${TMP_DIR} -type s -execdir rm -f '{}' \;
 
 	$(cd ${TMP_DIR}/sosreport-* && zip -y -q -r ${OUTFILE_F} . )
-	return $?
 }
 
 # Run supportconfig and zip results
@@ -98,11 +84,14 @@ do_supportconfig()
 		-i ${SCONFIG_PLUGINS} -B ${SVCTAG} || return 1
 
 	$(cd ${TMP_DIR}/nts_${SVCTAG} && zip -q -r ${OUTFILE_F} . )
-	return $?
 }
 
 do_report()
 {
+	TMP_DIR=$(mktemp -d)
+	OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
+	SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
+
 	if $(findmnt | grep -q "$MEDIA_DIR") && ! $supported; then
 		RETVAL=3
 		do_stop
@@ -130,33 +119,38 @@ do_report()
 		RETVAL=1
 		do_stop
 	fi
-	rm -rf ${TMP_DIR}
 
 	# Close connection with checksum
 	$end_full "${SHA_F}"
-	$do_close
+	if [ $? -ne 0 ]; then
+		RETVAL=1
+	fi
+	do_stop
 }
 
 do_stop()
 {
-	$do_close
-	$do_fail
+	set -x
+	if [ $RETVAL -eq 0 ]; then
+		$do_close
+	else
+		$do_fail
+	fi
+	rm -rf ${TMP_DIR}
 	exit $RETVAL
 }
 
 # Main
+RETVAL=0
+
 case $1 in
 	enable)
 		can_do_sassist
-		exit $?
 	;;
 	start)
-		can_do_sassist && \
 		do_report
-		exit $?
 	;;
 	stop)
-		RETVAL=0
 		do_stop
 	;;
 	*)
