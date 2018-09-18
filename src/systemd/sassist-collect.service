@@ -10,6 +10,9 @@ RequiresMountsFor=/run/media/iDRAC_NATOSC
 RefuseManualStart=true
 
 [Service]
-Type=oneshot
+Type=forking
+TimeoutStartSec=300
+PrivateTmp=yes
 Environment=MEDIA_DIR=/run/media/iDRAC_NATOSC
 ExecStart=/usr/bin/sassist.sh start
+ExecStopPost=/usr/bin/sassist.sh stop
