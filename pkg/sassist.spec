@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.8.3
+Version:	0.8.4
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
