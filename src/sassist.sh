@@ -89,8 +89,8 @@ do_supportconfig()
 do_report()
 {
 	TMP_DIR=$(mktemp -d)
-	OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
 	SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
+	OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
 
 	if $(findmnt | grep -q "$MEDIA_DIR") && ! $supported; then
 		RETVAL=3
@@ -130,7 +130,6 @@ do_report()
 
 do_stop()
 {
-	set -x
 	if [ $RETVAL -eq 0 ]; then
 		$do_close
 	else
