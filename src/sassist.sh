@@ -68,11 +68,6 @@ do_sosreport()
 	$SOSREPORT --batch -o ${SOS_PLUGINS} -p ${SOS_PROFILES}\
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG} || return 1
-	# Windows does not like some filenames in zip files
-	find ${TMP_DIR} -name "modinfo_*" -execdir mv '{}' modinfo \;
-	find ${TMP_DIR} -name "find_*" -execdir rm -r '{}' \;
-	find ${TMP_DIR} -name "*:*" -execdir rm -rf '{}' \;
-	find ${TMP_DIR} -type s -execdir rm -f '{}' \;
 
 	$(cd ${TMP_DIR}/sosreport-* && zip -y -q -r ${OUTFILE_F} . )
 }
