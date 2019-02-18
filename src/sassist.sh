@@ -67,6 +67,7 @@ do_sosreport()
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG} || return 1
 
+	find ${TMP_DIR} -type s -exec rm -f '{}' \;
 	$(cd ${TMP_DIR}/sosreport-* && zip -y -q -r ${OUTFILE_F} . )
 }
 
