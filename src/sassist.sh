@@ -47,17 +47,17 @@ ipmi()
 	return 1
 }
 
-can_filter="ipmi 0 1 3 0 0"
-cannot_filter="ipmi 0 1 1 0 0"
-supported="ipmi 1 0 0"
-end_full="ipmi 2 0 3"
-end_partial="ipmi 2 1 3"
-do_close="ipmi 2 2 0"
-do_fail="ipmi 2 3 0"
+sa_can_filter="ipmi 0 1 3 0 0"
+sa_cannot_filter="ipmi 0 1 1 0 0"
+sa_started="ipmi 1 0 0"
+sa_end_full="ipmi 2 0 3"
+sa_end_partial="ipmi 2 1 3"
+sa_do_close="ipmi 2 2 0"
+sa_do_fail="ipmi 2 3 0"
 
 can_do_sassist()
 {
-	$cannot_filter
+	$sa_cannot_filter
 }
 
 # Run sosreport and zip results
@@ -86,7 +86,7 @@ do_report()
 	SVCTAG=$(cat /sys/devices/virtual/dmi/id/product_serial)
 	OUTFILE_F="${TMP_DIR}/OSC-FR-Report-${SVCTAG}.zip"
 
-	if $(findmnt | grep -q "$MEDIA_DIR") && ! $supported; then
+	if $(findmnt | grep -q "$MEDIA_DIR") && ! $sa_started; then
 		RETVAL=3
 		do_stop
 	fi
@@ -115,7 +115,7 @@ do_report()
 	fi
 
 	# Close connection with checksum
-	$end_full "${SHA_F}"
+	$sa_end_full "${SHA_F}"
 	if [ $? -ne 0 ]; then
 		RETVAL=1
 	fi
@@ -125,9 +125,9 @@ do_report()
 do_stop()
 {
 	if [ $RETVAL -eq 0 ]; then
-		$do_close
+		$sa_do_close
 	else
-		$do_fail
+		$sa_do_fail
 	fi
 	rm -rf ${TMP_DIR}
 	exit $RETVAL
