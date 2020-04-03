@@ -2,15 +2,16 @@
 Description=Dell SupportAssist Device
 Documentation=http://www.dell.com/en-us/work/learn/supportassist
 
-After=dev-disk-by\x2did-usb\x2diDRAC_NATOSC_20151118\x2d0\x2d0:0.device
+After=dev-disk-by\x2dlabel-NATOSC.device
 BindsTo=sassist-collect.service
+ConditionPathExistsGlob=/dev/disk/by-id/usb-*_NATOSC_*-0:0
 RefuseManualStart=true
 
 [Mount]
-What=/dev/disk/by-id/usb-iDRAC_NATOSC_20151118-0-0:0
+What=/dev/disk/by-label/NATOSC
 Where=/run/media/iDRAC_NATOSC
 Type=vfat
 Options=noexec,rw,sync
 
 [Install]
-WantedBy=dev-disk-by\x2did-usb\x2diDRAC_NATOSC_20151118\x2d0\x2d0:0.device
+WantedBy=dev-disk-by\x2dlabel-NATOSC.device
