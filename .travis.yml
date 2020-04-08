@@ -4,7 +4,7 @@ dist: trusty
 services:
 - docker
 env:
-- OS=centos7
+- OS=centos
 - OS=opensuse
 install:
 - ./pkg/build-dockerfile.sh $OS
