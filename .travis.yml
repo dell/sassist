@@ -6,6 +6,9 @@ services:
 env:
 - OS=centos
 - OS=opensuse
+arch:
+  - ppc64le
+  - amd64
 install:
 - ./pkg/build-dockerfile.sh $OS
 script:
