@@ -77,7 +77,7 @@ do_supportconfig()
 	$SUPPORTCONFIG -Q -d -k -t ${TMP_DIR} \
 		-i ${SCONFIG_PLUGINS} -B ${SVCTAG} || return 1
 
-	$(cd ${TMP_DIR}/nts_${SVCTAG} && zip -q -r ${OUTFILE_F} . )
+	$(cd ${TMP_DIR}/*_${SVCTAG} && zip -q -r ${OUTFILE_F} . )
 }
 
 do_report()
