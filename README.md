@@ -14,7 +14,7 @@ Dell SupportAssist embedded in Dell iDRAC helps with troubleshooting/debugging i
  - Dell iDRAC aggregates OS/firmware/hardware logs and makes it available via the requested method.
 
 ## Download
-- 'sassist' is available in Fedora 29 and can be installed from the default repository.
+- 'sassist' is available in Fedora 29, openSUSE Leap 15.4 and Tumbleweed. It can be installed from the default repository. On SUSE Linux Enterprise Server 15 SP4 it is available via [SUSE PackageHub](https://packagehub.suse.com/packages/sassist/).
 - Pre-built packages for RHEL (CentOS, Fedora) and SLES (OpenSUSE) based distributions are available [here](https://github.com/dell/sassist/releases)
 
 ## Build
