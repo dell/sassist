@@ -3,7 +3,7 @@ This is 'sassist', Dell SupportAssist log collector agent for Linux.
 ## What is 'sassist'?
 Dell SupportAssist embedded in Dell iDRAC helps with troubleshooting/debugging issues with Dell PowerEdge Server hardware/OS.
 
-'sassist' is an agent that runs on the Linux Operating System to work with Dell iDRAC enabling log and configuration collection. It uses native log/configuration collection tools like [sos](https://github.com/sosreport/sos) and [supportconfig](https://www.suse.com/c/free_tools/supportconfig-linux/) available in popular Linux distributions.
+'sassist' is an agent that runs on the Linux Operating System to work with Dell iDRAC enabling log and configuration collection. It uses native log/configuration collection tools like [sos](https://github.com/sosreport/sos) and [supportconfig](https://github.com/openSUSE/supportutils) available in popular Linux distributions.
 
 'sassist' requires Dell [iDRAC 9](https://www.dell.com/support/article/us/en/19/sln308699/idrac-9-versions-and-release-notes) or later.
 
