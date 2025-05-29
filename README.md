@@ -54,6 +54,3 @@ Dell SupportAssist embedded in Dell iDRAC helps with troubleshooting/debugging i
 
 ## Notes
 - Do not run SupportAssist Collection while updating system firmware components with [Dell DSU](https://linux.dell.com/repo/hardware/dsu/).
-
-Send patches and suggestions to the following mailing list with "sassist: " in the subject line:
-[mailing list](https://lists.us.dell.com/mailman/listinfo/linux-poweredge)
