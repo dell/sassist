@@ -31,10 +31,10 @@
 
 
 # User configurable options
-SOS_PLUGINS="grub2,iscsi,cman,pacemaker,named"
-SOS_PROFILES="system,storage,network,hardware,services"
+SOS_PLUGINS="console,fwupd,grub2,iscsi,tuned"
+SOS_PROFILES="hardware,network,storage"
 SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
-SOSREPORT="/usr/sbin/sosreport"
+SOSREPORT="/usr/bin/sos"
 SUPPORTCONFIG="/sbin/supportconfig"
 
 #--------------------------------------------------------------
@@ -63,7 +63,7 @@ can_do_sassist()
 # Run sosreport and zip results
 do_sosreport()
 {
-	$SOSREPORT --batch -o ${SOS_PLUGINS} -p ${SOS_PROFILES}\
+	$SOSREPORT report --batch -o ${SOS_PLUGINS} -p ${SOS_PROFILES}\
 		--tmp-dir ${TMP_DIR} --build --quiet \
 		--name ${SVCTAG} || return 1
 
