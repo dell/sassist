@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.8.6
+Version:	0.8.7
 Release:	1%{?dist}
 Summary:	Dell SupportAssist log collector
 
@@ -54,6 +54,9 @@ install -p -m644 src/systemd/run-media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Thu May 29 2025 Charles Rose <charles_rose@dell.com> - 0.8.7-1
+- Update sos cli
+
 * Mon Mar 17 2020 Charles Rose <charles_rose@dell.com> - 0.8.6-1
 - Fix socket files breaking zip file creation.
 - Use labels to mount USB device.
