@@ -34,7 +34,7 @@
 SOS_PLUGINS="console,fwupd,grub2,iscsi,tuned"
 SOS_PROFILES="hardware,network,storage"
 SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
-SOSREPORT="/usr/bin/sos"
+SOSREPORT="/usr/sbin/sos"
 SUPPORTCONFIG="/sbin/supportconfig"
 
 #--------------------------------------------------------------
