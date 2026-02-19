@@ -1,0 +1,3 @@
+Tests: installation-check
+Depends: @
+Restrictions: superficial

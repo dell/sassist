@@ -1,0 +1,22 @@
+#!/bin/bash
+# Deeper tests need specific hardware - just test some basics
+
+set -e
+
+echo "Checking sassist.sh installation..."
+test -f /usr/libexec/sassist.sh
+test -x /usr/libexec/sassist.sh
+
+echo "Checking systemd unit files installation..."
+test -f /lib/systemd/system/sassist.service
+test -f /lib/systemd/system/sassist-collect.service
+test -f /lib/systemd/system/run-media-iDRAC_NATOSC.mount
+
+echo "Verifying sassist.sh script integrity..."
+# Check script can be parsed (syntax check)
+bash -n /usr/libexec/sassist.sh
+
+echo "Checking help/usage output..."
+/usr/libexec/sassist.sh 2>&1 | grep -q "Usage:"
+
+echo "All installation checks passed!"

@@ -1,0 +1,8 @@
+sassist (0.8.8-0) UNRELEASED; urgency=medium
+
+  * Initial Deb packaging for Ubuntu (LP: #2130263)
+    - Add at least a superficial autopkgtest (need real HW for more)
+    - Add basics like watch, copyright, ...
+    - Note: does not need build, just to place the files correctly
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 19 Feb 2026 07:34:00 +0000
