@@ -1,0 +1,26 @@
+Source: sassist
+Section: admin
+Priority: optional
+Maintainer: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Build-Depends: debhelper-compat (= 13),
+Standards-Version: 4.7.2
+Homepage: https://github.com/dell/sassist
+Vcs-Browser: https://github.com/dell/sassist
+Vcs-Git: https://github.com/dell/sassist.git
+
+Package: sassist
+Architecture: all
+Depends: ${misc:Depends},
+         freeipmi-tools,
+         sos,
+         zip
+Description: Dell SupportAssist log collector for Linux
+ Dell SupportAssist embedded in Dell iDRAC helps with troubleshooting and
+ debugging issues with Dell PowerEdge Server hardware and operating systems.
+ .
+ sassist is an agent that runs on the Linux operating system to work with
+ Dell iDRAC enabling log and configuration collection. It uses native log
+ and configuration collection tools like sos available in popular Linux
+ distributions.
+ .
+ sassist requires Dell iDRAC 9 or later.

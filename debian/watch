@@ -1,0 +1,9 @@
+Version: 5
+# Upstream does not provide GPG signatures for releases
+# See: https://github.com/dell/sassist/releases
+Source: https://api.github.com/repos/dell/sassist/git/matching-refs/tags/
+Matching-Pattern: https://api.github.com/repos/[^/]+/[^/]+/git/refs/tags/v?@ANY_VERSION@
+Download-Url-Mangle: s%(api.github.com/repos/[^/]+/[^/]+)/git/refs/%$1/tarball/refs/%g
+Filename-Mangle: s%.*/@ANY_VERSION@%@PACKAGE@-$1.tar.gz%
+Search-Mode: plain
+Pgp-Mode: none
