@@ -7,7 +7,7 @@ ConditionPathExistsGlob=/dev/ipmi*
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/sassist.sh enable
+ExecStart=/usr/libexec/sassist.sh enable
 
 [Install]
 WantedBy=multi-user.target

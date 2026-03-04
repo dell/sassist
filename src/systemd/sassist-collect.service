@@ -15,5 +15,5 @@ Type=forking
 TimeoutStartSec=300
 PrivateTmp=yes
 Environment=MEDIA_DIR=/run/media/iDRAC_NATOSC
-ExecStart=/usr/bin/sassist.sh start
-ExecStopPost=/usr/bin/sassist.sh stop
+ExecStart=/usr/libexec/sassist.sh start
+ExecStopPost=/usr/libexec/sassist.sh stop
