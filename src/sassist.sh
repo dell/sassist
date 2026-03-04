@@ -34,7 +34,7 @@
 #SOS_PLUGINS="console,fwupd,grub2,iscsi,tuned"
 SOS_PROFILES="hardware,network,storage"
 SCONFIG_PLUGINS="BOOT,BTRFS,CRASH,DISK,IB,ISCSI,LVM,MEM,MOD,MPIO,NET,SRAID,SYSCONFIG,SYSFS,UDEV,X"
-SOSREPORT="/usr/sbin/sos"
+SOSREPORT="" # path is distro specific
 SUPPORTCONFIG="/sbin/supportconfig"
 
 #--------------------------------------------------------------
@@ -91,7 +91,7 @@ do_report()
 		do_stop
 	fi
 
-	if [ -x "$SOSREPORT" ]; then
+	if SOSREPORT="$(command -v sos 2>/dev/null)"; then
 		do_sosreport >/dev/null 2>&1
 	elif [ -x "$SUPPORTCONFIG" ]; then
 		do_supportconfig >/dev/null 2>&1
