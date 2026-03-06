@@ -7,8 +7,9 @@ override_dh_auto_build:
 	# No build steps required, the auto-detected Makefile would create RPMs
 
 override_dh_installsystemd:
-	# Enable sassist.service only
-	dh_installsystemd --name=sassist sassist.service
-	# Install other units but don't enable them (they are triggered)
-	dh_installsystemd --name=sassist-collect --no-enable sassist-collect.service
-	dh_installsystemd --name=run-media-iDRAC_NATOSC --no-enable run-media-iDRAC_NATOSC.mount
+	# The units are installed but not enabled per upstreams request to only
+	# have admins trigger them on demand to collect sos report data.
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade sassist.service
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade sassist-collect.service
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade run-media-iDRAC_NATOSC.mount
+
