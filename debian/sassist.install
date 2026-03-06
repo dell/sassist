@@ -1,0 +1,4 @@
+src/sassist.sh usr/libexec/
+src/systemd/sassist.service usr/lib/systemd/system/
+src/systemd/sassist-collect.service usr/lib/systemd/system/
+src/systemd/run-media-iDRAC_NATOSC.mount usr/lib/systemd/system/

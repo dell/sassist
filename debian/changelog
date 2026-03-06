@@ -1,0 +1,9 @@
+sassist (0.8.7-0ubuntu1) resolute; urgency=medium
+
+  * Initial Debian packaging (LP: #2130263)
+    - Add at least a superficial autopkgtest (need real HW for more)
+    - Add basics like watch, copyright, ...
+    - Modify to avoid placing script-with-language-extension in /usr/bin
+    - Note: does not need build, just to place the files correctly
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 19 Feb 2026 07:34:00 +0000

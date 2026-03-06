@@ -1,0 +1,33 @@
+Description: Move sassist.sh to /usr/libexec for system-internal use
+ The sassist.sh script is not intended to be called directly by users.
+ It's a system helper invoked only by systemd services. Moving it to
+ /usr/libexec follows FHS guidelines for internal helper programs.
+ .
+ This also resolves lintian warnings about missing manpage and
+ script-with-language-extension for user-facing commands.
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Forwarded: no
+Last-Update: 2026-02-19
+
+---
+--- a/src/systemd/sassist.service
++++ b/src/systemd/sassist.service
+@@ -7,7 +7,7 @@ ConditionPathExistsGlob=/dev/ipmi*
+ 
+ [Service]
+ Type=oneshot
+-ExecStart=/usr/bin/sassist.sh enable
++ExecStart=/usr/libexec/sassist.sh enable
+ 
+ [Install]
+ WantedBy=multi-user.target
+--- a/src/systemd/sassist-collect.service
++++ b/src/systemd/sassist-collect.service
+@@ -15,5 +15,5 @@ Type=forking
+ TimeoutStartSec=300
+ PrivateTmp=yes
+ Environment=MEDIA_DIR=/run/media/iDRAC_NATOSC
+-ExecStart=/usr/bin/sassist.sh start
+-ExecStopPost=/usr/bin/sassist.sh stop
++ExecStart=/usr/libexec/sassist.sh start
++ExecStopPost=/usr/libexec/sassist.sh stop

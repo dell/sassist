@@ -1,0 +1,4 @@
+# sassist-collect.service is triggered automatically by run-media-iDRAC_NATOSC.mount
+# and has RefuseManualStart=true, making an [Install] section unnecessary since
+# the service cannot and should not be manually enabled or started.
+sassist: systemd-service-file-missing-install-key [usr/lib/systemd/system/sassist-collect.service]
