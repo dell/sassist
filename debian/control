@@ -1,7 +1,7 @@
 Source: sassist
 Section: admin
 Priority: optional
-Maintainer: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Maintainer: Charles Rose <charles.rose@dell.com>
 Build-Depends: debhelper-compat (= 13),
 Standards-Version: 4.7.2
 Homepage: https://github.com/dell/sassist
