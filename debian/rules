@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	# No build steps required, the auto-detected Makefile would create RPMs
+
+override_dh_installsystemd:
+	# The units are installed but not enabled per upstreams request to only
+	# have admins trigger them on demand to collect sos report data.
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade sassist.service
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade sassist-collect.service
+	dh_installsystemd --no-enable --no-start --no-stop-on-upgrade run-media-iDRAC_NATOSC.mount
+

@@ -1,0 +1,4 @@
+# Upstream (Dell) does not provide GPG signatures for releases.
+# The watch file explicitly documents this with pgpmode=none.
+# See: https://github.com/dell/sassist/releases
+sassist source: debian-watch-does-not-check-openpgp-signature
