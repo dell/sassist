@@ -1,5 +1,5 @@
 Name:		sassist
-Version:	0.8.8
+Version:	0.8.9
 Release:	%autorelease
 Summary:	Dell SupportAssist log collector
 
@@ -54,6 +54,9 @@ install -p -m644 src/systemd/run-media-iDRAC_NATOSC.mount %{buildroot}%{_unitdir
 %systemd_postun_with_restart sassist.service
 
 %changelog
+* Tue May 12 2026 Charles Rose <charles.rose@dell.com> - 0.8.9-1
+- debian package support
+
 * Wed Mar 04 2026 Charles Rose <charles.rose@dell.com> - 0.8.8-1
 - sos, USB storage, move sassist.sh to libexec
 
